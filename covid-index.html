@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+<!-- Bootstrap CDN🎨 -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <link rel="stylesheet" href="covid-style.css">  
+</head>
+<body>   
+<!-- NavBar👽 -->
+  <div class="navbar" id="navbar1">
+    <div class="col-md-12">
+      <div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+          <div class="bg-dark p-4">           
+            <h4 class="text-white">Collapsed content</h4>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+          </div>
+        </div>
+        </div>
+    <nav class="navbar navbar-expand-lg navbar-light" id="navbg">
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+         <ul class="navbar-nav">       
+          <li class="nav-item active">
+            <a class="nav-link" href="covid-index.html">Home <span class="sr-only">(current)</span></a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="covid-contacts.html">Emergency Contacts</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="covid-aboutus.html">About us</a>
+          </li>  
+          <li>
+            <!-- Dark-Mode Button🕹️ -->
+            <div class="dark-mode navbar-light bg-light" id="btnclass">
+              <!-- <button type="button" class="btn btn-dark" onclick="myFunction()">Dark Mode</button> -->
+              <!-- <button type="button" class="btn btn-outline-dark" onclick="myFunction()">Dark</button> -->
+              <button class="btn float-right my-2 my-sm-0" id="dark-btn" onclick="myFunction()">Dark Theme</button>
+            </div>
+          </li>        
+        </ul>        
+      </div>
+    </nav>
+  </div>
+</div>  
+<!-- Main boxes which contain total number of data🗂️ -->
+  <section id="counter" class="sec-padding">
+		<div class="container">
+			<div class="row" id="AdminPanelBoxes">
+          <div class="col-md-3 ">
+            <div class="count" id="count-1"> <span class="fa fa-smile-o"></span>
+              <p class="number" id="active"></p>
+              <h4>Current Active Cases</h4>
+            </div>
+          </div>
+            <div class="col-md-3 ">
+              <div class="count" id="count-2"> <span class="fa fa-smile-o"></span>
+              <p class="number" id="recovered"></p>
+              <h4>Current Recoverd Cases</h4> 
+            </div>
+            </div>
+              <div class="col-md-3 ">
+                <div class="count" id="count-3"> <span class="fa fa-smile-o"></span>
+                  <p class="number" id="death"></p>
+                  <h4>Total Death</h4> 
+                </div>
+              </div>
+                <div class="col-md-3 ">
+                  <div class="count" id="count-4"> <span class="fa fa-smile-o"></span>
+                    <p class="number" id="total"></p>
+                    <h4>Current Cases</h4> 
+                  </div>
+                </div>
+			</div>
+		</div>
+	</section>
+<!-- Semi Heading📝 -->
+  <div class="heading" id="Heading-page1">
+    <center><h2>LIVE COVID-19 DATA OF INDIA</h2></center>
+  </div> 
+<!-- Table view for Data📒   -->
+  <div class="row">
+      <div class="col-md-12">
+            <table class="table table-striped" id="tbl1">
+                <thead>
+                    <tr>
+                      <th scope="col">State Name</th>
+                      <th scope="col">Active Cases</th>
+                      <th scope="col">Recoverd Cases</th>
+                      <th scope="col">Death</th>
+                      <th scope="col">Total Cases</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+<!-- Api script which passes Data in tabale📝 -->
+                      <script> 
+                            async function load() 
+                            {
+                                let url = "https://api.rootnet.in/covid19-in/stats/latest";
+                                let obj = await (await fetch(url)).json();
+                                    for(i=0;i<=obj["data"]["regional"].length;i++)
+                                    {                                   
+                                        document.getElementById("tbl1").innerHTML += "<tr><td>"+obj["data"]["regional"][i]["loc"]+
+                                          "</td><td>"+((obj["data"]["regional"][i]["totalConfirmed"])-((obj["data"]["regional"][i]["discharged"])+(obj["data"]["regional"][i]["deaths"])))+
+                                          "</td><td>"+obj["data"]["regional"][i]["discharged"]+
+                                          "</td><td>"+obj["data"]["regional"][i]["deaths"]+
+                                          "</td><td>"+obj["data"]["regional"][i]["totalConfirmed"]+"</td></tr>";                 
+                                          document.getElementById("active").innerHTML = obj["data"]["unofficial-summary"][0]["active"];    
+                                          document.getElementById("recovered").innerHTML = obj["data"]["unofficial-summary"][0]["recovered"];   
+                                          document.getElementById("death").innerHTML = obj["data"]["unofficial-summary"][0]["deaths"]; 
+                                          document.getElementById("total").innerHTML = obj["data"]["unofficial-summary"][0]["total"];
+                                    }                        
+                            }
+                            load();
+                       </script>
+                  </tbody>
+            </table>
+      </div>
+  </div>
+<!-- Script for dark mode toggling🕹️   -->
+  <script>
+    function myFunction() {
+       var element = document.body;
+       element.classList.toggle("dark-mode");
+    }
+  </script>
+<!-- Footer for copyright©️ -->
+  <div class="footer-copyright">
+    <center>
+    <footer>&copy; Copyright 2022 Darsh Shah</footer>
+  </center>
+  </div>
+</body>
+</html>
